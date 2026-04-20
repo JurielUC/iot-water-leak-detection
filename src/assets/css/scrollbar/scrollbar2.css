@@ -1,0 +1,28 @@
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+    width: 10px; /* Slightly larger for a morph effect */
+}
+
+/* Background of the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #e0e0e081; /* Light background for a soft base */
+    border-radius: 10px; /* Rounded edges */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.7); /* Inner shadow for a concave look */
+}
+
+/* Style of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background: #d1d1d1; /* Slightly darker than the track */
+    border-radius: 10px; /* Rounded edges for smoothness */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2),
+                -2px -2px 5px rgba(255, 255, 255, 0.5); /* Outer shadow for a convex look */
+    transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for hover */
+}
+
+/* Hover style for the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: #b5b5b5; /* Slightly darker for a hover effect */
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3),
+                -1px -1px 3px rgba(255, 255, 255, 0.4); /* Adjusted shadows for a pressed look */
+}

@@ -1,0 +1,32 @@
+/* Text color classes */
+.text-primary {
+    color: var(--primary) !important;
+}
+  
+.text-secondary {
+    color: var(--secondary) !important;
+}
+  
+.text-success {
+    color: var(--success) !important;
+}
+  
+.text-danger {
+    color: var(--danger) !important;
+}
+  
+.text-warning {
+    color: var(--warning) !important;
+}
+  
+.text-info {
+    color: var(--info) !important;
+}
+  
+.text-light {
+    color: var(--light) !important;
+}
+  
+.text-dark {
+    color: var(--dark) !important;
+}

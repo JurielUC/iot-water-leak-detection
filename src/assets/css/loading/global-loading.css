@@ -1,0 +1,22 @@
+/* Define a keyframe animation for spinning */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply the animation to the .loading class */
+.loading {
+    animation: spin 4s linear infinite;
+}
+
+.global-loading {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

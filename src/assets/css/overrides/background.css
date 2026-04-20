@@ -1,0 +1,44 @@
+/* Background color utility classes */
+.bg-header {
+    background-color: var(--header);
+}
+
+.bg-primary {
+    background-color: var(--primary);
+    color: var(--text-light);
+}
+
+.bg-secondary {
+    background-color: var(--secondary);
+    color: var(--text-light);
+}
+
+.bg-success {
+    background-color: var(--success);
+    color: var(--text-light);
+}
+
+.bg-danger {
+    background-color: var(--danger);
+    color: var(--text-light);
+}
+
+.bg-warning {
+    background-color: var(--warning);
+    color: var(--text-dark);
+}
+
+.bg-info {
+    background-color: var(--info);
+    color: var(--text-light);
+}
+
+.bg-light {
+    background-color: var(--light);
+    color: var(--text-dark);
+}
+
+.bg-dark {
+    background-color: var(--dark);
+    color: var(--text-light);
+}

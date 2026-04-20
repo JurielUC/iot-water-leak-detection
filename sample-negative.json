@@ -1,0 +1,40 @@
+{
+  "devices": {
+    "esp32-001": {
+      "status": "online",
+      "lastSeen": "2026-04-20T02:15:00"
+    }
+  },
+
+  "sensorReadings": {
+    "flowRate": 8.75,
+    "totalVolume": 355.912,
+    "timestamp": "2026-04-20T02:15:00",
+    "deviceId": "esp32-001"
+  },
+
+  "leakAlert": {
+    "status": "active",
+    "flowRate": 8.75,
+    "detectedAt": "2026-04-20T02:15:00"
+  },
+
+  "sensorHistory": {
+    "1745115000000": {
+      "flowRate": 8.20,
+      "time": "2026-04-20T02:14:40"
+    },
+    "1745115001000": {
+      "flowRate": 8.40,
+      "time": "2026-04-20T02:14:45"
+    },
+    "1745115002000": {
+      "flowRate": 8.55,
+      "time": "2026-04-20T02:14:50"
+    },
+    "1745115003000": {
+      "flowRate": 8.75,
+      "time": "2026-04-20T02:15:00"
+    }
+  }
+}

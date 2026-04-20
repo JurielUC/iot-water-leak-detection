@@ -1,0 +1,20 @@
+/* Width of the scrollbar */
+::-webkit-scrollbar {
+    width: 1px;
+}
+
+/* Background of the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Style of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background: none;
+    border-radius: 5px;
+}
+
+/* Hover style for the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: none;
+}
