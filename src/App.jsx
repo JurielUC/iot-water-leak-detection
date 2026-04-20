@@ -6,6 +6,7 @@ import StatCard from './components/StatCard';
 import StatusBadge from './components/StatusBadge';
 import LeakAlertCard from './components/LeakAlertCard';
 import HistoryChart from './components/HistoryChart';
+import Footer from './components/Footer';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'assets/css/styles.css';
@@ -239,6 +240,8 @@ function App() {
           <LeakAlertCard leakAlert={leakAlert} />
         </div>
       </section>
+      <hr className='mt-5' />
+      <Footer />
     </div>
   );
 }
