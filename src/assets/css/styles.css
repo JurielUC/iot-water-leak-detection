@@ -145,6 +145,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 18px;
+    align-items: stretch;
   }
   
   .modern-card {
@@ -409,3 +410,116 @@
       gap: 14px;
     }
   }
+
+
+  .stats-grid--six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .system-state-row {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 24px;
+  }
+  
+  .system-state-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 24px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  }
+  
+  .system-state-card.safe {
+    border-color: rgba(22, 163, 74, 0.18);
+  }
+  
+  .system-state-card.danger {
+    border-color: rgba(220, 38, 38, 0.22);
+    background: linear-gradient(180deg, rgba(254, 242, 242, 0.95), rgba(255, 255, 255, 0.88));
+  }
+  
+  .system-state-label {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  
+  .system-state-card h3 {
+    margin: 0 0 8px;
+    font-size: 24px;
+  }
+  
+  .system-state-text {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 760px;
+  }
+  
+  .system-state-badge {
+    white-space: nowrap;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  
+  .system-state-badge.safe {
+    background: var(--green-soft);
+    color: var(--green);
+  }
+  
+  .system-state-badge.danger {
+    background: var(--red-soft);
+    color: var(--red);
+  }
+  
+  @media (max-width: 1400px) {
+    .stats-grid--six {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .system-state-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .stats-grid--six {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .stats-grid--six {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  .chart-card .recharts-legend-wrapper {
+    padding-top: 8px;
+  }
+
+  .main-panel,
+.side-panel {
+  height: 100%;
+}
+
+.main-panel > .modern-card,
+.side-panel > .modern-card {
+  height: 100%;
+}

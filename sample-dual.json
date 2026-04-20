@@ -1,0 +1,108 @@
+{
+    "devices": {
+      "esp32-001": {
+        "status": "online",
+        "lastSeen": "2026-04-20T19:15:00"
+      }
+    },
+  
+    "sensorReadings": {
+      "flowRate": 6.55,
+      "totalVolume": 158.742,
+      "timestamp": "2026-04-20T19:15:00",
+      "deviceId": "esp32-001"
+    },
+  
+    "dualSensorReadings": {
+      "sensor1": {
+        "flowRate": 7.30,
+        "totalVolume": 82.410
+      },
+      "sensor2": {
+        "flowRate": 5.80,
+        "totalVolume": 76.332
+      },
+      "flowDifference": 1.50,
+      "timestamp": "2026-04-20T19:15:00",
+      "deviceId": "esp32-001"
+    },
+  
+    "sensorHistory": {
+      "1745157240000": {
+        "sensor1FlowRate": 7.10,
+        "sensor2FlowRate": 5.90,
+        "flowDifference": 1.20,
+        "flowRate": 6.50,
+        "time": "2026-04-20T19:14:10"
+      },
+      "1745157250000": {
+        "sensor1FlowRate": 7.15,
+        "sensor2FlowRate": 5.85,
+        "flowDifference": 1.30,
+        "flowRate": 6.50,
+        "time": "2026-04-20T19:14:20"
+      },
+      "1745157260000": {
+        "sensor1FlowRate": 7.20,
+        "sensor2FlowRate": 5.82,
+        "flowDifference": 1.38,
+        "flowRate": 6.51,
+        "time": "2026-04-20T19:14:30"
+      },
+      "1745157270000": {
+        "sensor1FlowRate": 7.22,
+        "sensor2FlowRate": 5.80,
+        "flowDifference": 1.42,
+        "flowRate": 6.51,
+        "time": "2026-04-20T19:14:40"
+      },
+      "1745157280000": {
+        "sensor1FlowRate": 7.25,
+        "sensor2FlowRate": 5.78,
+        "flowDifference": 1.47,
+        "flowRate": 6.52,
+        "time": "2026-04-20T19:14:50"
+      },
+      "1745157290000": {
+        "sensor1FlowRate": 7.28,
+        "sensor2FlowRate": 5.77,
+        "flowDifference": 1.51,
+        "flowRate": 6.53,
+        "time": "2026-04-20T19:15:00"
+      },
+      "1745157300000": {
+        "sensor1FlowRate": 7.30,
+        "sensor2FlowRate": 5.76,
+        "flowDifference": 1.54,
+        "flowRate": 6.53,
+        "time": "2026-04-20T19:15:10"
+      },
+      "1745157310000": {
+        "sensor1FlowRate": 7.32,
+        "sensor2FlowRate": 5.78,
+        "flowDifference": 1.54,
+        "flowRate": 6.55,
+        "time": "2026-04-20T19:15:20"
+      },
+      "1745157320000": {
+        "sensor1FlowRate": 7.31,
+        "sensor2FlowRate": 5.79,
+        "flowDifference": 1.52,
+        "flowRate": 6.55,
+        "time": "2026-04-20T19:15:30"
+      },
+      "1745157330000": {
+        "sensor1FlowRate": 7.30,
+        "sensor2FlowRate": 5.80,
+        "flowDifference": 1.50,
+        "flowRate": 6.55,
+        "time": "2026-04-20T19:15:40"
+      }
+    },
+  
+    "leakAlert": {
+      "status": "active",
+      "flowRate": 1.50,
+      "detectedAt": "2026-04-20T19:15:00"
+    }
+  }

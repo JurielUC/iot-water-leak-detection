@@ -17,19 +17,36 @@ const DEVICE_ID = 'esp32-001';
 function App() {
   const [deviceStatus, setDeviceStatus] = useState('offline');
   const [lastSeen, setLastSeen] = useState('');
+  const [firebaseConnected, setFirebaseConnected] = useState(false);
+
   const [sensorReadings, setSensorReadings] = useState({
     flowRate: 0,
     totalVolume: 0,
     timestamp: '',
     deviceId: DEVICE_ID,
   });
+
+  const [dualSensorReadings, setDualSensorReadings] = useState({
+    sensor1: {
+      flowRate: 0,
+      totalVolume: 0,
+    },
+    sensor2: {
+      flowRate: 0,
+      totalVolume: 0,
+    },
+    flowDifference: 0,
+    timestamp: '',
+    deviceId: DEVICE_ID,
+  });
+
   const [leakAlert, setLeakAlert] = useState({
     status: 'clear',
     flowRate: 0,
     detectedAt: '',
   });
+
   const [history, setHistory] = useState([]);
-  const [firebaseConnected, setFirebaseConnected] = useState(false);
 
   useEffect(() => {
     if (!rtdb) {
@@ -43,15 +60,14 @@ function App() {
     const statusRef = ref(rtdb, `devices/${DEVICE_ID}/status`);
     const lastSeenRef = ref(rtdb, `devices/${DEVICE_ID}/lastSeen`);
     const readingsRef = ref(rtdb, 'sensorReadings');
+    const dualReadingsRef = ref(rtdb, 'dualSensorReadings');
     const leakRef = ref(rtdb, 'leakAlert');
     const historyRef = ref(rtdb, 'sensorHistory');
 
     const unsubConnected = onValue(
       connectedRef,
       (snapshot) => {
-        const connected = snapshot.val() === true;
-        console.log('Firebase connected:', connected);
-        setFirebaseConnected(connected);
+        setFirebaseConnected(snapshot.val() === true);
       },
       (error) => {
         console.error('Connected listener error:', error);
@@ -61,9 +77,7 @@ function App() {
     const unsubStatus = onValue(
       statusRef,
       (snapshot) => {
-        const value = snapshot.val();
-        console.log('Status changed:', value);
-        setDeviceStatus(value || 'offline');
+        setDeviceStatus(snapshot.val() || 'offline');
       },
       (error) => {
         console.error('Status listener error:', error);
@@ -73,9 +87,7 @@ function App() {
     const unsubLastSeen = onValue(
       lastSeenRef,
       (snapshot) => {
-        const value = snapshot.val();
-        console.log('LastSeen changed:', value);
-        setLastSeen(value || '');
+        setLastSeen(snapshot.val() || '');
       },
       (error) => {
         console.error('LastSeen listener error:', error);
@@ -86,7 +98,6 @@ function App() {
       readingsRef,
       (snapshot) => {
         const data = snapshot.val();
-        console.log('sensorReadings changed:', data);
 
         if (!data) {
           setSensorReadings({
@@ -110,11 +121,45 @@ function App() {
       }
     );
 
+    const unsubDualReadings = onValue(
+      dualReadingsRef,
+      (snapshot) => {
+        const data = snapshot.val();
+
+        if (!data) {
+          setDualSensorReadings({
+            sensor1: { flowRate: 0, totalVolume: 0 },
+            sensor2: { flowRate: 0, totalVolume: 0 },
+            flowDifference: 0,
+            timestamp: '',
+            deviceId: DEVICE_ID,
+          });
+          return;
+        }
+
+        setDualSensorReadings({
+          sensor1: {
+            flowRate: Number(data?.sensor1?.flowRate || 0),
+            totalVolume: Number(data?.sensor1?.totalVolume || 0),
+          },
+          sensor2: {
+            flowRate: Number(data?.sensor2?.flowRate || 0),
+            totalVolume: Number(data?.sensor2?.totalVolume || 0),
+          },
+          flowDifference: Number(data?.flowDifference || 0),
+          timestamp: data?.timestamp || '',
+          deviceId: data?.deviceId || DEVICE_ID,
+        });
+      },
+      (error) => {
+        console.error('dualSensorReadings listener error:', error);
+      }
+    );
+
     const unsubLeak = onValue(
       leakRef,
       (snapshot) => {
         const data = snapshot.val();
-        console.log('leakAlert changed:', data);
 
         if (!data) {
           setLeakAlert({
@@ -140,7 +185,6 @@ function App() {
       historyRef,
       (snapshot) => {
         const data = snapshot.val();
-        console.log('sensorHistory changed:', data);
 
         if (!data) {
           setHistory([]);
@@ -151,6 +195,9 @@ function App() {
           .map(([key, value]) => ({
             key,
             flowRate: Number(value?.flowRate || 0),
+            sensor1FlowRate: Number(value?.sensor1FlowRate || 0),
+            sensor2FlowRate: Number(value?.sensor2FlowRate || 0),
+            flowDifference: Number(value?.flowDifference || 0),
             time: value?.time || '',
           }))
           .sort((a, b) => Number(a.key) - Number(b.key))
@@ -168,11 +215,11 @@ function App() {
     );
 
     return () => {
-      console.log('Cleaning up Firebase listeners...');
       unsubConnected();
       unsubStatus();
       unsubLastSeen();
       unsubReadings();
+      unsubDualReadings();
       unsubLeak();
       unsubHistory();
     };
@@ -190,7 +237,7 @@ function App() {
           <p className="eyebrow">Smart Monitoring System</p>
           <h1>Water Usage Monitoring Dashboard</h1>
           <p className="hero-subtext">
-            Real-time water flow tracking, leak detection, and device monitoring.
+            Real-time dual-sensor water flow tracking, leak detection, and device monitoring.
           </p>
         </div>
 
@@ -205,17 +252,39 @@ function App() {
         </div>
       </header>
 
-      <section className="stats-grid">
+      <section className="stats-grid stats-grid--six">
         <StatCard
-          title="Current Flow Rate"
+          title="Average Flow Rate"
           value={`${sensorReadings.flowRate.toFixed(2)} L/min`}
           subtitle={`Updated: ${formatTimestamp(sensorReadings.timestamp) || '—'}`}
         />
 
         <StatCard
-          title="Total Volume"
+          title="Combined Total Volume"
           value={`${sensorReadings.totalVolume.toFixed(3)} L`}
           subtitle={`Device ID: ${sensorReadings.deviceId}`}
+        />
+
+        <StatCard
+          title="Sensor 1 Flow"
+          value={`${dualSensorReadings.sensor1.flowRate.toFixed(2)} L/min`}
+          subtitle={`Total: ${dualSensorReadings.sensor1.totalVolume.toFixed(3)} L`}
+        />
+
+        <StatCard
+          title="Sensor 2 Flow"
+          value={`${dualSensorReadings.sensor2.flowRate.toFixed(2)} L/min`}
+          subtitle={`Total: ${dualSensorReadings.sensor2.totalVolume.toFixed(3)} L`}
+        />
+
+        <StatCard
+          title="Flow Difference"
+          value={`${dualSensorReadings.flowDifference.toFixed(2)} L/min`}
+          subtitle={
+            dualSensorReadings.flowDifference > 1.5
+              ? 'Possible water loss detected'
+              : 'Difference is within normal range'
+          }
         />
 
         <StatCard
@@ -223,12 +292,24 @@ function App() {
           value={formatTimestamp(lastSeen) || '—'}
           subtitle="Latest heartbeat from ESP32"
         />
+      </section>
 
-        <StatCard
-          title="System State"
-          value={leakIsActive ? 'Leak Detected' : 'Normal'}
-          subtitle={leakIsActive ? 'Immediate attention required' : 'Flow condition is stable'}
-        />
+      <section className="system-state-row">
+        <div className={`system-state-card ${leakIsActive ? 'danger' : 'safe'}`}>
+          <div>
+            <p className="system-state-label">System State</p>
+            <h3>{leakIsActive ? 'Leak Detected' : 'Normal Operation'}</h3>
+            <p className="system-state-text">
+              {leakIsActive
+                ? 'Immediate attention required. Flow mismatch or abnormal condition detected.'
+                : 'Flow condition is currently stable across monitored sensors.'}
+            </p>
+          </div>
+
+          <div className={`system-state-badge ${leakIsActive ? 'danger' : 'safe'}`}>
+            {leakIsActive ? 'ALERT ACTIVE' : 'SYSTEM NORMAL'}
+          </div>
+        </div>
       </section>
 
       <section className="content-grid">
@@ -240,7 +321,8 @@ function App() {
           <LeakAlertCard leakAlert={leakAlert} />
         </div>
       </section>
-      <hr className='mt-5' />
+
+      <hr className="mt-5" />
       <Footer />
     </div>
   );

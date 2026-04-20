@@ -15,7 +15,7 @@ const Footer = () => {
           </div>
   
           <div className="footer-right">
-            <span>Instructor</span>
+            <span>Submitted to:</span>
             <p>MR. HILARIO F. NARIDA</p>
           </div>
         </div>
