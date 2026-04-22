@@ -13,11 +13,14 @@ import 'assets/css/styles.css';
 import { formatTimestamp } from './utils/formatDate';
 
 const DEVICE_ID = 'esp32-001';
+const OFFLINE_TIMEOUT_MS = 30000; // 30 seconds
 
 function App() {
   const [deviceStatus, setDeviceStatus] = useState('offline');
+  const [rawDeviceStatus, setRawDeviceStatus] = useState('offline');
   const [lastSeen, setLastSeen] = useState('');
   const [firebaseConnected, setFirebaseConnected] = useState(false);
+  const [now, setNow] = useState(Date.now());
 
   const [sensorReadings, setSensorReadings] = useState({
     flowRate: 0,
@@ -49,6 +52,14 @@ function App() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     if (!rtdb) {
       console.error('Realtime Database is not initialized.');
       return;
@@ -77,7 +88,7 @@ function App() {
     const unsubStatus = onValue(
       statusRef,
       (snapshot) => {
-        setDeviceStatus(snapshot.val() || 'offline');
+        setRawDeviceStatus(snapshot.val() || 'offline');
       },
       (error) => {
         console.error('Status listener error:', error);
@@ -224,6 +235,28 @@ function App() {
       unsubHistory();
     };
   }, []);
+
+  useEffect(() => {
+    if (!lastSeen) {
+      setDeviceStatus('offline');
+      return;
+    }
+
+    const lastSeenTime = new Date(lastSeen).getTime();
+
+    if (Number.isNaN(lastSeenTime)) {
+      setDeviceStatus(rawDeviceStatus || 'offline');
+      return;
+    }
+
+    const diff = now - lastSeenTime;
+
+    if (diff > OFFLINE_TIMEOUT_MS) {
+      setDeviceStatus('offline');
+    } else {
+      setDeviceStatus('online');
+    }
+  }, [lastSeen, rawDeviceStatus, now]);
 
   const leakIsActive = useMemo(() => leakAlert.status === 'active', [leakAlert.status]);
 
